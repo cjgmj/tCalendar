@@ -34,32 +34,32 @@ let genCalendar = function(monthO:number, year:number) {
         DAYS[1] = 29;
     }
     
-    let result:string = `<div class="text-center"><h1>${MONTHS[month]}</h1></div><div class='table-responsive text-right'><table class="table table-bordered">`;
+    let result:string = `<div class="text-center"><h1>${MONTHS[month]}</h1></div><div class="table-responsive text-right"><table class="table table-bordered">`;
     result += `<thead class="thead-dark"><tr>`;
 
     for(let day of DAYSN){
         result += `<th scope="col">${day}</th>`
     }
 
-    result += `</tr></thead><tbody class='row-eq-height'>`;
+    result += `</tr></thead><tbody>`;
     
     for(let i=0; i<42; i++) {
         if	(i%7 == 0) {
-            result += "<tr>";
+            result += `<tr>`;
         }
         
         if (dayStart != 0) {
-            result += `<td id='${year}-${month}-${DAYS[month-1] - dayStart +1}' class='table-active'>${(DAYS[month-1] - dayStart +1)}</td>`;
+            result += `<td id="${year}-${month}-${DAYS[month-1] - dayStart +1}" class="table-active">${(DAYS[month-1] - dayStart +1)}</td>`;
             dayStart--;
         } else if (dayStart == 0 && cont <= DAYS[month]) {
             if(year == today.getFullYear() && month == today.getMonth() && cont == today.getDate()) {
-                result += `<td id='${year}-${(month+1)}-${cont}' class='table-primary'>${cont}</td>`;
+                result += `<td id="${year}-${(month+1)}-${cont}" class="table-primary">${cont}</td>`;
             } else {
-                result += `<td id='${year}-${(month+1)}-${cont}'>${cont}</td>`;
+                result += `<td id="${year}-${(month+1)}-${cont}">${cont}</td>`;
             }
             cont++;
         } else {
-            result += `<td id='${year}-${month+2}-${desp}' class='table-active'>${desp}</td>`;
+            result += `<td id="${year}-${month+2}-${desp}" class="table-active">${desp}</td>`;
             desp++;
         }
         
