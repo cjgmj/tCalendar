@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+
+    <title>Calendar</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div id='calendar'></div>
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/tCalendar.js"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            $('#calendar').html(calendar(2018, 10));
+
+        });
+    </script>
+
+</body>
+
+</html>
