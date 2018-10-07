@@ -1,4 +1,23 @@
-let calendar = function(year:number, monthO:number) {
+class EventCalendar {
+    day:number;
+    month:number;
+    year:number;
+    eventCalendar:string;
+
+    constructor(day:number, month:number, year:number, eventCalendar:string){
+        this.day=day;
+        this.month=month;
+        this.year=year;
+        this.eventCalendar=eventCalendar;
+    }
+}
+
+
+let initCalendar = function(id:string, month:number, year:number){
+    $(`#${id}`).html(genCalendar(month, year));
+}
+
+let genCalendar = function(monthO:number, year:number) {
     const MONTHS:string[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const DAYS:number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     const DAYSN:string[] = ["L", "M", "X", "J", "V", "S", "D"]
@@ -15,14 +34,14 @@ let calendar = function(year:number, monthO:number) {
         DAYS[1] = 29;
     }
     
-    let result:string = `<div class="text-center"><h1>${MONTHS[month]}</h1><table class="table table-bordered">`;
+    let result:string = `<div class="text-center"><h1>${MONTHS[month]}</h1></div><div class='table-responsive text-right'><table class="table table-bordered">`;
     result += `<thead class="thead-dark"><tr>`;
 
     for(let day of DAYSN){
         result += `<th scope="col">${day}</th>`
     }
 
-    result += `</tr></thead><tbody>`;
+    result += `</tr></thead><tbody class='row-eq-height'>`;
     
     for(let i=0; i<42; i++) {
         if	(i%7 == 0) {
@@ -30,17 +49,17 @@ let calendar = function(year:number, monthO:number) {
         }
         
         if (dayStart != 0) {
-            result += `<td id='#${year}-${month}-${DAYS[month-1] - dayStart +1}' class='table-active'>${(DAYS[month-1] - dayStart +1)}</td>`;
+            result += `<td id='${year}-${month}-${DAYS[month-1] - dayStart +1}' class='table-active'>${(DAYS[month-1] - dayStart +1)}</td>`;
             dayStart--;
         } else if (dayStart == 0 && cont <= DAYS[month]) {
             if(year == today.getFullYear() && month == today.getMonth() && cont == today.getDate()) {
-                result += `<td id='#${year}-${(month+1)}-${cont}' class='table-primary'>${cont}</td>`;
+                result += `<td id='${year}-${(month+1)}-${cont}' class='table-primary'>${cont}</td>`;
             } else {
-                result += `<td id='#${year}-${(month+1)}-${cont}'>${cont}</td>`;
+                result += `<td id='${year}-${(month+1)}-${cont}'>${cont}</td>`;
             }
             cont++;
         } else {
-            result += `<td id='#${year}-${month+2}-${desp}' class='table-active'>${desp}</td>`;
+            result += `<td id='${year}-${month+2}-${desp}' class='table-active'>${desp}</td>`;
             desp++;
         }
         
@@ -50,7 +69,18 @@ let calendar = function(year:number, monthO:number) {
         
     }
     
-    result += `</tbody></table></div>`;
+    result += `</tbody></table></div>`;    
     
     return result;
+}
+
+let addEventsCalendar = function(eventsCalendar:EventCalendar[]){
+    for(let eventCalendar of eventsCalendar){
+        addEventCalendar(eventCalendar);
+    }
+}
+
+let addEventCalendar = function(eventCalendar:EventCalendar){
+    $(`#${eventCalendar.year}-${eventCalendar.month}-${eventCalendar.day}`).append(`<div class="alert alert-info text-left" role="alert">${eventCalendar.eventCalendar}</div>`);
+    
 }

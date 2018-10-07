@@ -26,7 +26,13 @@
     <script>
         $(document).ready(function() {
 
-            $('#calendar').html(calendar(2018, 10));
+            initCalendar("calendar", 10, 2018);
+            addEventsCalendar([{
+                day: 7,
+                month: 10,
+                year: 2018,
+                eventCalendar: "Test"
+            }]);
 
         });
     </script>
