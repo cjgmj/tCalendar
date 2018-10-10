@@ -6,11 +6,6 @@ $colorOutMonthPrimary: rgb(172, 172, 172);
 $colorOutMonthSecundary: rgb(250, 250, 250);
 $colorEventPrimary: rgb(0, 148, 32);
 $colorEventSecundary: rgb(204, 255, 206);
-@mixin size($width, $height:auto) {
-    width: $width;
-    height: $height;
-}
-
 @mixin dayStyle($colorPrimary, $colorSecundary:white) {
     color: $colorPrimary;
     background: $colorSecundary;
@@ -40,13 +35,13 @@ $colorEventSecundary: rgb(204, 255, 206);
 }
 
 .th {
-    @include size(14%);
+    width: 14%;
     text-align: center;
     padding: 1% 0;
 }
 
 .td {
-    @include size(14%, 105px);
+    width: 14%;
     padding-top: .5%;
     text-align: right;
 }

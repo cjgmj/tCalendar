@@ -10,6 +10,8 @@ var EventCalendar = /** @class */ (function () {
 }());
 var initCalendar = function (id, month, year) {
     $("#" + id).html(genCalendar(month, year));
+    responsiveHeight();
+    $(window).resize(responsiveHeight);
 };
 var genCalendar = function (monthO, year) {
     var MONTHS = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -67,4 +69,9 @@ var addEventsCalendar = function (eventsCalendar) {
 };
 var addEventCalendar = function (eventCalendar) {
     $("#" + eventCalendar.year + "-" + eventCalendar.month + "-" + eventCalendar.day).append("<p class=\"event\">" + eventCalendar.eventCalendar + "</p>");
+};
+var responsiveHeight = function () {
+    var tdWidth = $(".td").width();
+    if (typeof tdWidth !== "undefined")
+        $(".td").height(tdWidth);
 };

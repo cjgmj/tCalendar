@@ -24,14 +24,12 @@
 
 .th {
   width: 14%;
-  height: auto;
   text-align: center;
   padding: 1% 0;
 }
 
 .td {
   width: 14%;
-  height: 105px;
   padding-top: 0.5%;
   text-align: right;
 }

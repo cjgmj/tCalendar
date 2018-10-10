@@ -15,6 +15,8 @@ class EventCalendar {
 
 let initCalendar = function(id:string, month:number, year:number){
     $(`#${id}`).html(genCalendar(month, year));
+    responsiveHeight();
+    $(window).resize(responsiveHeight);
 }
 
 let genCalendar = function(monthO:number, year:number) {
@@ -83,4 +85,10 @@ let addEventsCalendar = function(eventsCalendar:EventCalendar[]){
 let addEventCalendar = function(eventCalendar:EventCalendar){
     $(`#${eventCalendar.year}-${eventCalendar.month}-${eventCalendar.day}`).append(`<p class="event">${eventCalendar.eventCalendar}</p>`);
     
+}
+
+let responsiveHeight = function(){
+    let tdWidth = $(".td").width();
+    if(typeof tdWidth !== "undefined")
+        $(".td").height(tdWidth);
 }
