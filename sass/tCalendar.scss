@@ -68,10 +68,7 @@ $colorEventSecundary: rgb(204, 255, 206);
 }
 
 .event {
-    margin-top: 2%;
-    margin-left: 4%;
-    margin-right: 4%;
-    margin-bottom: 6%;
+    margin: 2% 4% 6% 4%;
     padding: 0 0 0 5%;
     text-align: left;
     @include dayStyle($colorEventPrimary, $colorEventSecundary);
