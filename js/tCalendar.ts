@@ -134,7 +134,6 @@ let displayEvents = function(){
                     break;
                 }
                 if((value*22) > (tdHeight-40)){
-                    console.log("hola");
                     $(`#${idEvent} > p`).css("display", "none");
                     $(`#${idEvent}`).append(`<p class="event" id="eventGroup">${value} eventos</p>`);
                 } else{
