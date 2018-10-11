@@ -12,20 +12,21 @@ class EventCalendar {
     }
 }
 
-
-let initCalendar = function(id:string, month:number, year:number){
-    $(`#${id}`).html(genCalendar(month, year));
+let initCalendar = function(id:string, eventsCalendar:EventCalendar[]){
+    $(`#${id}`).html(genCalendar());
     responsiveHeight();
+    addEventsCalendar(eventsCalendar);
     $(window).resize(responsiveHeight);
 }
 
-let genCalendar = function(monthO:number, year:number) {
+let genCalendar = function() {
     const MONTHS:string[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const DAYS:number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     const DAYSN:string[] = ["L", "M", "X", "J", "V", "S", "D"]
 
-    let month = monthO-1;
     let today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth();
     let dateSelected = new Date(year, month, 0);
     let dayStart = dateSelected.getDay();
     
@@ -77,18 +78,59 @@ let genCalendar = function(monthO:number, year:number) {
 }
 
 let addEventsCalendar = function(eventsCalendar:EventCalendar[]){
+    let eventsGrouped:Map<string,number> = new Map<string,number>();
+
     for(let eventCalendar of eventsCalendar){
-        addEventCalendar(eventCalendar);
+        let key:string = `${eventCalendar.year}-${eventCalendar.month}-${eventCalendar.day}`;
+        let value:number|undefined = eventsGrouped.get(key);
+        if(typeof value === "undefined"){
+            eventsGrouped.set(key, 1);
+        }else{
+            eventsGrouped.set(key, (value+1));
+        
+        }
+    }
+
+    let lastKey:string="";
+    for(let eventCalendar of eventsCalendar){
+        let key:string = `${eventCalendar.year}-${eventCalendar.month}-${eventCalendar.day}`;
+        let value:number|undefined = eventsGrouped.get(key);
+        if(typeof value !== "undefined"){
+            let tdHeight:number|undefined = $(`#${key}`).height();
+            if(typeof tdHeight !== "undefined"){
+                if(value*22 > tdHeight){
+                    if(lastKey === key){
+                        continue;
+                    }
+
+                    eventCalendar.eventCalendar = `${value} eventos`;
+                }
+
+                addEventCalendar(eventCalendar);
+
+                if(tdHeight < 50)
+                    $(".event").css("display","none");
+                else
+                    $(".event").css("display","block");
+            }
+        }
+        lastKey=key;
     }
 }
 
 let addEventCalendar = function(eventCalendar:EventCalendar){
     $(`#${eventCalendar.year}-${eventCalendar.month}-${eventCalendar.day}`).append(`<p class="event">${eventCalendar.eventCalendar}</p>`);
-    
 }
 
 let responsiveHeight = function(){
-    let tdWidth = $(".td").width();
-    if(typeof tdWidth !== "undefined")
-        $(".td").height(tdWidth);
+    let tdWidth:number|undefined = $(".td").width();
+    if(typeof tdWidth !== "undefined"){
+        let tdHeight:number = Math.round(tdWidth-40);
+        $(".td").height(tdHeight);
+
+        if(tdHeight < 50)
+            $(".event").css("display","none");
+        else
+            $(".event").css("display","block");
+    }
 }
