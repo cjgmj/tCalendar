@@ -8,11 +8,17 @@ var EventCalendar = /** @class */ (function () {
     }
     return EventCalendar;
 }());
+var eventsGrouped = new Map();
+var eventsMoreOne = [];
+var charged = false;
+var eventsCalendar = [];
 var initCalendar = function (id, eventsCalendar) {
     $("#" + id).html(genCalendar());
     responsiveHeight();
     addEventsCalendar(eventsCalendar);
+    displayEvents();
     $(window).resize(responsiveHeight);
+    charged = true;
 };
 var genCalendar = function () {
     var MONTHS = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -64,7 +70,7 @@ var genCalendar = function () {
     return result;
 };
 var addEventsCalendar = function (eventsCalendar) {
-    var eventsGrouped = new Map();
+    eventsCalendar = eventsCalendar;
     for (var _i = 0, eventsCalendar_1 = eventsCalendar; _i < eventsCalendar_1.length; _i++) {
         var eventCalendar = eventsCalendar_1[_i];
         var key = eventCalendar.year + "-" + eventCalendar.month + "-" + eventCalendar.day;
@@ -75,29 +81,10 @@ var addEventsCalendar = function (eventsCalendar) {
         else {
             eventsGrouped.set(key, (value + 1));
         }
-    }
-    var lastKey = "";
-    for (var _a = 0, eventsCalendar_2 = eventsCalendar; _a < eventsCalendar_2.length; _a++) {
-        var eventCalendar = eventsCalendar_2[_a];
-        var key = eventCalendar.year + "-" + eventCalendar.month + "-" + eventCalendar.day;
-        var value = eventsGrouped.get(key);
-        if (typeof value !== "undefined") {
-            var tdHeight = $("#" + key).height();
-            if (typeof tdHeight !== "undefined") {
-                if (value * 22 > tdHeight) {
-                    if (lastKey === key) {
-                        continue;
-                    }
-                    eventCalendar.eventCalendar = value + " eventos";
-                }
-                addEventCalendar(eventCalendar);
-                if (tdHeight < 50)
-                    $(".event").css("display", "none");
-                else
-                    $(".event").css("display", "block");
-            }
+        if (eventsMoreOne.indexOf(key) === -1) {
+            eventsMoreOne.push(key);
         }
-        lastKey = key;
+        addEventCalendar(eventCalendar);
     }
 };
 var addEventCalendar = function (eventCalendar) {
@@ -112,5 +99,30 @@ var responsiveHeight = function () {
             $(".event").css("display", "none");
         else
             $(".event").css("display", "block");
+    }
+    if (charged) {
+        displayEvents();
+    }
+};
+var displayEvents = function () {
+    for (var _i = 0, eventsMoreOne_1 = eventsMoreOne; _i < eventsMoreOne_1.length; _i++) {
+        var idEvent = eventsMoreOne_1[_i];
+        var value = eventsGrouped.get(idEvent);
+        var tdHeight = $("#" + idEvent).height();
+        if (typeof tdHeight !== "undefined" && typeof value !== "undefined") {
+            if (tdHeight < 50) {
+                $(".event").css("display", "none");
+                break;
+            }
+            if ((value * 22) > (tdHeight - 40)) {
+                console.log("hola");
+                $("#" + idEvent + " > p").css("display", "none");
+                $("#" + idEvent).append("<p class=\"event\" id=\"eventGroup\">" + value + " eventos</p>");
+            }
+            else {
+                $("#" + idEvent + " > p").css("display", "block");
+                $("#eventGroup").remove();
+            }
+        }
     }
 };

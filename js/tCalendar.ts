@@ -11,12 +11,18 @@ class EventCalendar {
         this.eventCalendar=eventCalendar;
     }
 }
+let eventsGrouped:Map<string,number> = new Map<string,number>();
+let eventsMoreOne:string[] = [];
+let charged:boolean = false;
+let eventsCalendar:EventCalendar[] = [];
 
 let initCalendar = function(id:string, eventsCalendar:EventCalendar[]){
     $(`#${id}`).html(genCalendar());
     responsiveHeight();
     addEventsCalendar(eventsCalendar);
+    displayEvents();
     $(window).resize(responsiveHeight);
+    charged = true;
 }
 
 let genCalendar = function() {
@@ -78,7 +84,7 @@ let genCalendar = function() {
 }
 
 let addEventsCalendar = function(eventsCalendar:EventCalendar[]){
-    let eventsGrouped:Map<string,number> = new Map<string,number>();
+    eventsCalendar = eventsCalendar;
 
     for(let eventCalendar of eventsCalendar){
         let key:string = `${eventCalendar.year}-${eventCalendar.month}-${eventCalendar.day}`;
@@ -87,34 +93,13 @@ let addEventsCalendar = function(eventsCalendar:EventCalendar[]){
             eventsGrouped.set(key, 1);
         }else{
             eventsGrouped.set(key, (value+1));
-        
         }
-    }
 
-    let lastKey:string="";
-    for(let eventCalendar of eventsCalendar){
-        let key:string = `${eventCalendar.year}-${eventCalendar.month}-${eventCalendar.day}`;
-        let value:number|undefined = eventsGrouped.get(key);
-        if(typeof value !== "undefined"){
-            let tdHeight:number|undefined = $(`#${key}`).height();
-            if(typeof tdHeight !== "undefined"){
-                if(value*22 > tdHeight){
-                    if(lastKey === key){
-                        continue;
-                    }
-
-                    eventCalendar.eventCalendar = `${value} eventos`;
-                }
-
-                addEventCalendar(eventCalendar);
-
-                if(tdHeight < 50)
-                    $(".event").css("display","none");
-                else
-                    $(".event").css("display","block");
-            }
+        if(eventsMoreOne.indexOf(key) === -1){
+            eventsMoreOne.push(key);
         }
-        lastKey=key;
+
+        addEventCalendar(eventCalendar);
     }
 }
 
@@ -129,8 +114,33 @@ let responsiveHeight = function(){
         $(".td").height(tdHeight);
 
         if(tdHeight < 50)
-            $(".event").css("display","none");
+            $(".event").css("display", "none");
         else
-            $(".event").css("display","block");
+            $(".event").css("display", "block")
+    }
+
+    if(charged){
+        displayEvents();
+    }
+}
+
+let displayEvents = function(){
+    for(let idEvent of eventsMoreOne){
+        let value:number|undefined = eventsGrouped.get(idEvent);
+        let tdHeight:number|undefined = $(`#${idEvent}`).height();
+            if(typeof tdHeight !== "undefined" && typeof value !== "undefined"){
+                if(tdHeight < 50){
+                    $(".event").css("display", "none");
+                    break;
+                }
+                if((value*22) > (tdHeight-40)){
+                    console.log("hola");
+                    $(`#${idEvent} > p`).css("display", "none");
+                    $(`#${idEvent}`).append(`<p class="event" id="eventGroup">${value} eventos</p>`);
+                } else{
+                    $(`#${idEvent} > p`).css("display", "block");
+                    $(`#eventGroup`).remove();
+                }
+            }
     }
 }
