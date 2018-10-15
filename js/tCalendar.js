@@ -116,7 +116,9 @@ var displayEvents = function () {
             }
             if ((value * 22) > (tdHeight - 40)) {
                 $("#" + idEvent + " > p").css("display", "none");
-                $("#" + idEvent).append("<p class=\"event\" id=\"eventGroup\">" + value + " eventos</p>");
+                if (!$("#eventGroup").length)
+                    $("#" + idEvent).append("<p class=\"event\" id=\"eventGroup\">" + value + " eventos</p>");
+                $("#eventGroup").css("display", "block");
             }
             else {
                 $("#" + idEvent + " > p").css("display", "block");
