@@ -128,20 +128,20 @@ let displayEvents = function(){
     for(let idEvent of eventsMoreOne){
         let value:number|undefined = eventsGrouped.get(idEvent);
         let tdHeight:number|undefined = $(`#${idEvent}`).height();
-            if(typeof tdHeight !== "undefined" && typeof value !== "undefined"){
-                if(tdHeight < 50){
-                    $(".event").css("display", "none");
-                    break;
-                }
-                if((value*22) > (tdHeight-40)){
-                    $(`#${idEvent} > p`).css("display", "none");
-                    if(!$(`#eventGroup`).length)
-                        $(`#${idEvent}`).append(`<p class="event" id="eventGroup">${value} eventos</p>`);
-                    $(`#eventGroup`).css("display", "block");
-                } else{
-                    $(`#${idEvent} > p`).css("display", "block");
-                    $(`#eventGroup`).remove();
-                }
+        if(typeof tdHeight !== "undefined" && typeof value !== "undefined"){
+            if(tdHeight < 50){
+                $(".event").css("display", "none");
+                break;
             }
+            if((value*22) > (tdHeight-40)){
+                $(`#${idEvent} > p`).css("display", "none");
+                if(!$(`#eventGroup`).length)
+                    $(`#${idEvent}`).append(`<p class="event" id="eventGroup">${value} eventos</p>`);
+                $(`#eventGroup`).css("display", "block");
+            } else{
+                $(`#${idEvent} > p`).css("display", "block");
+                $(`#eventGroup`).remove();
+            }
+        }
     }
 }
